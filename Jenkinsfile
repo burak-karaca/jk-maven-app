@@ -50,6 +50,8 @@ pipeline {
             // }
             steps {
                 script {
+                    env.VER = input message: "Select the env to deploy to:", ok: "Done", paramaters: [choice(name: 'ENV', choices: ['1.0', '2.0', '3.0'], description: '')]
+                    
                     gv.testApp() 
                     // echo "Testing the application..."
                 }
@@ -57,18 +59,19 @@ pipeline {
             }
         }
         stage('deploy') {
-            input {
-                message "Select the environment to deploy"
-                ok "Environment selected"
-                parameters {
-                    choice(name: 'ENV', choices: ['dev', 'stageing', 'prod'], description: '')
-
-                }
-            }
+            // input {
+            //     message "Select the environment to deploy"
+            //     ok "Environment selected"
+            //     parameters {
+            //         choice(name: 'ENV', choices: ['dev', 'stageing', 'prod'], description: '')
+            //     }
+            // }
             steps {
                 script {
+                    env.ENV = input message: "Select the env to deploy to:", ok: "Done", paramaters: [choice(name: 'ENV', choices: ['dev', 'stageing', 'prod'], description: '')]
+                    
                     gv.deployApp()
-                    echo "Deploying to ${ENV}"
+                    echo "Deploying to ${ENV}, and version is ${VER}"
                 }
                 // echo "Deploying the application..."
                 // echo "deploying version ${VERSION}"
