@@ -4,7 +4,7 @@
 def gv
 
 pipeline {
-    agent none
+    agent any
     parameters { // exp. select which version you want to deploy on gui
         // string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
         choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
