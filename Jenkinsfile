@@ -50,7 +50,7 @@ pipeline {
             // }
             steps {
                 script {
-                    env.VER = input message: "Select the env to deploy to:", ok: "Done", paramaters: [choice(name: 'ENV', choices: ['1.0', '2.0', '3.0'], description: '')]
+                    env.VER = input message: "Select the env to deploy to:", ok: "Done", paramaters: [choice(name: 'VER', choices: ['1.0', '2.0', '3.0'], description: '')]
                     
                     gv.testApp() 
                     // echo "Testing the application..."
