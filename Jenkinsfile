@@ -1,6 +1,8 @@
 #!/usr/bin/env groovy
 // CODE_CHANGES = getGitChanges()
 
+def gv
+
 pipeline {
     agent none
     parameters { // exp. select which version you want to deploy on gui
@@ -16,12 +18,21 @@ pipeline {
     //     SERVER_CREDENTIALS = credentials('testing-env-variable') // takes the ID & you need Credentials Binding plugin!
     // }
     stages {
-        stage('build') {
+        stage("init") {
             steps {
                 script {
-                    echo "Building the application..."
+                    gv = load "script.groovy"
+                }
+            }
+        }
+        stage('build') {
+            steps {
+                script { // groovy script
+                    gv.buildApp() 
                     // echo "version ${NEW_VERSION}"
                 }
+                // echo "Building the application..."
+                // echo "version ${NEW_VERSION}"
             }
         }
         stage('test') {
@@ -39,23 +50,26 @@ pipeline {
             // }
             steps {
                 script {
-                    echo "Testing the application..."
+                    gv.testApp() 
+                    // echo "Testing the application..."
                 }
+                // echo "Testing the application..."
             }
         }
         stage('deploy') {
             steps {
                 script {
-                    echo "Deploying the application..."
-                    echo "deploying version ${VERSION}"
-                    //echo "deploying with ${SERVER_CREDENTIALS}"  //when you define it in env variable
-                    //sh "${SERVER_CREDENTIALS}" // when you define it in env variable
-                    //withCredentials([ //instead of defining in the env variable. you can define it here
-                    //    usernamePassword(credentials: 'testing-env-variable', usernameVariable: USER, passwordVariable: PWD)
-                    //]) {
-                    //    sh "some script ${USER} ${PWD}"
-                    //}
+                    gv.deployApp()
                 }
+                // echo "Deploying the application..."
+                // echo "deploying version ${VERSION}"
+                //echo "deploying with ${SERVER_CREDENTIALS}"  //when you define it in env variable
+                //sh "${SERVER_CREDENTIALS}" // when you define it in env variable
+                //withCredentials([ //instead of defining in the env variable. you can define it here
+                //    usernamePassword(credentials: 'testing-env-variable', usernameVariable: USER, passwordVariable: PWD)
+                //]) {
+                //    sh "some script ${USER} ${PWD}"
+                //}
             }
         }
     }
