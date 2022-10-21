@@ -1,5 +1,18 @@
 #!/usr/bin/env groovy
+
+
+// global level scope
+// @Library('jenkins-shared-library@branch-name')
 @Library('jenkins-shared-library')
+
+// below is project level scope
+// library identifier: 'jenkins-shared-library@main', retriever: modernSCM(
+//         [$class: 'GitSCMSource',
+//         remote: 'https://github.com/burak-karaca/jenkins-shared-library',
+//         credentialsId: 'burak-karaca'
+//         ]
+)
+
 def gv
 pipeline {
     agent any
